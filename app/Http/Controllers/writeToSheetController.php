@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
@@ -30,7 +31,7 @@ class writeToSheetController extends Controller
             'phone' => $request->input('phone'),
             'quantity1' => $request->input('quantity1'),
             'quantity2' => $request->input('quantity2'),
-            'date' => date('Y-m-d H:i:s'),
+            'date' => Carbon::now(),
         ];
 
         $webhookUrl = 'https://script.google.com/macros/s/AKfycbzEmO3PIpjFD6myz_upuFKyHJEEr1tW0K_dB-dHw9dTlZAngy0Im93OqPRqeWDJcAEr7g/exec?gid=0';
