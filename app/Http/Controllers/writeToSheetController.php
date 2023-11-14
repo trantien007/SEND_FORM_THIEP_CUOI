@@ -16,6 +16,23 @@ class writeToSheetController extends Controller
             'phone' => 'required|regex:/[0-9]{10}/',
             'quantity1' => 'required',
             'quantity2' => 'required',
+            
+            'name-1' => 'required',
+            'name-father-1' => 'required',
+            'name-mother-1' => 'required',
+            'address-1' => 'required',
+            'date-1' => 'required',
+            'address-to-chuc-hon-le-1' => 'required',
+            'address-moi-an-1' => 'required',
+            'time-tiec-1' => 'required',
+            'name-2' => 'required',
+            'name-father-2' => 'required',
+            'name-mother-2' => 'required',
+            'address-2' => 'required',
+            'date-2' => 'required',
+            'address-to-chuc-hon-le-2' => 'required',
+            'address-moi-an-2' => 'required',
+            'time-tiec-2' => 'required',
         ], [
             'name' => 'Họ và tên không được để trống',
             'phone' => 'Số điện thoại không được để trống',
@@ -40,10 +57,10 @@ class writeToSheetController extends Controller
 
         if ($response->successful()) {
             // Gửi thành công, xử lý dữ liệu nếu cần
-            return redirect()->back()->with('message.success', 'Data submitted to Google Sheets successfully');
+            return redirect()->back()->with('message.success', 'Gửi thông tin thành công, cảm ơn bạn');
         } else {
             // Xử lý lỗi khi gửi dữ liệu
-            return redirect()->back()->with('message.error', 'Failed to submit data to Google Sheets');
+            return redirect()->back()->with('message.error', 'Gửi thông tin thất bại vui lòng thử lại')->withInput();
         }
     }
 }
