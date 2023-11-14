@@ -181,8 +181,8 @@
             }
 
             .container form .user__details {
-                max-height: 300px;
-                overflow-y: scroll;
+                /* max-height: 300px;
+                overflow-y: scroll; */
             }
 
             .user__details::-webkit-scrollbar {
