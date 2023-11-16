@@ -24,7 +24,7 @@
 
         :root {
             --main-blue: #71b7e6;
-            --main-purple: #9b59b6;
+            --main-purple: #596ab6;
             --main-grey: #ccc;
             --sub-grey: #d9d9d9;
         }
@@ -53,16 +53,17 @@
             font-size: 25px;
             font-weight: 500;
             position: relative;
+            text-transform: uppercase;
         }
 
         .container .title::before {
             content: "";
             position: absolute;
-            height: 3.5px;
-            width: 30px;
-            background: linear-gradient(135deg, var(--main-blue), var(--main-purple));
+            height: 5.5px;
+            width: 50px;
+            background: linear-gradient(135deg, var(--main-blue), #0d6efd);
             left: 0;
-            bottom: 0;
+            bottom: -5px;
         }
 
         .container form .user__details {
@@ -78,13 +79,33 @@
             margin-bottom: 15px;
         }
 
+        .input__box.address {
+            width: 100% !important;
+            display: block !important;
+        }
+
+        form .user__details .input__box.address .wrap-address {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        @media (min-width: 768px) {
+
+            .wrap-address input,
+            .wrap-address select {
+                width: 49% !important;
+            }
+        }
+
         .user__details .input__box .details {
             font-weight: 500;
             margin-bottom: 5px;
-            display: block;
+            display: inline-block;
         }
 
-        .user__details .input__box input {
+        .user__details .input__box input,
+        .user__details .input__box select {
             height: 45px;
             width: 100%;
             outline: none;
@@ -96,9 +117,8 @@
             transition: all 0.3s ease;
         }
 
-        .user__details .input__box input:focus,
-        .user__details .input__box input:valid {
-            border-color: var(--main-purple);
+        .user__details .input__box input:focus {
+            border-color: #000;
         }
 
         /* inside the form gender details */
@@ -243,6 +263,13 @@
             color: #fff;
             font-size: 35px;
         }
+
+        .required-text {
+            color: red;
+            font-size: 22px;
+            display: inline;
+            margin-left: 2px;
+        }
     </style>
 </head>
 
@@ -261,7 +288,7 @@
                     {{ session('message.success') }}
                 </div>
             @endif
-            <div class="user__details">
+            <div class="user__details mb-5">
                 <div class="input__box">
                     <span class="details">Tên khác hàng</span>
                     <input type="text" name="name" value="{{ old('name') }}" placeholder="Nhập tên khác hàng">
@@ -282,10 +309,9 @@
             </div>
 
             <div class="title mb-3">Thông tin nhà trai</div>
-            <div class="user__details">
-                <div class="input__box">
-                    <span class="details">Tên chú rể</span>
-                    <span class="small">(Bắt buộc)</span>
+            <div class="user__details mb-5">
+                <div class="input__box" style="width: 100%;">
+                    <span class="details">Tên chú rể <div class="required-text">*</div></span>
                     <input type="text" name="name-1" value="{{ old('name-1') }}" placeholder="Tên chú rể">
                 </div>
                 <div class="input__box">
@@ -300,22 +326,40 @@
                     <input type="text" name="name-mother-1" value="{{ old('name-mother-1') }}"
                         placeholder="Tên mẹ chú rể">
                 </div>
-                <div class="input__box">
+                <div class="input__box address">
                     <span class="details">Địa chỉ Nhà Trai</span>
-                    <span class="small">(Thôn Xóm Ấp/ Phường Xã/ Quận Huyện/ Tỉnh)</span>
-                    <input type="text" name="address-1" value="{{ old('address-1') }}" placeholder="Địa chỉ">
+                    <div class="wrap-address">
+                        <input type="text" name="address-1" value="{{ old('address-1') }}"
+                            placeholder="Địa chỉ chi tiết">
+                        <select id="provinceSelect" name="address-1-1" value="{{ old('address-1-1') }}">
+                            <option value="">Chọn tỉnh/thành phố</option>
+                        </select>
+                        <select id="districtSelect" name="address-1-2" value="{{ old('address-1-2') }}">
+                            <option value="">Chọn huyện/quận</option>
+                        </select>
+                        <select id="wardSelect" name="address-1-3" value="{{ old('address-1-3') }}">
+                            <option value="">Chọn thôn/xã</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input__box">
+                    <span class="details">Thời Gian tổ chức Hôn Lễ (Lễ Thành Hôn)</span>
+                    <span class="small">(Chọn ngày Dương lịch)</span>
+                    <input type="time" name="date-1" value="{{ old('time-1') }}">
                 </div>
                 <div class="input__box">
-                    <span class="details">Thời Gian/Ngày/tháng tổ chức Hôn Lễ (Lễ Thành Hôn)</span>
-                    <span class="small">(Chọn ngày Dương lịch - Có thể để trống)</span>
-                    <input type="datetime-local" name="date-1" value="{{ old('date-1') }}">
+                    <span class="details">Ngày/tháng tổ chức Hôn Lễ (Lễ Thành Hôn)</span>
+                    <span class="small">(Chọn ngày Dương lịch)</span>
+                    <input type="date" name="date-1" value="{{ old('date-1') }}">
                 </div>
                 <div class="input__box">
                     <span class="details">Địa chỉ tổ chức Hôn Lễ (Lễ Thành Hôn)</span>
-                    <span class="small">(Tại gia đình Nhà Trai hoặc Trung tâm tiệc cưới hoặc Nhà Thờ - Nếu là trung tâm
+                    <span class="small">(Tại gia đình Nhà Trai hoặc Trung tâm tiệc cưới hoặc Nhà Thờ - Nếu là trung
+                        tâm
                         tiệc cưới hoặc Nhà Thờ thì cần ghi rõ địa chỉ)</span>
-                    <input type="text" name="address-to-chuc-hon-le-1" value="{{ old('address-to-chuc-hon-le-1') }}"
-                        placeholder="Địa chỉ tổ chức hôn lễ">
+                    <input type="text" name="address-to-chuc-hon-le-1"
+                        value="{{ old('address-to-chuc-hon-le-1') }}" placeholder="Địa chỉ tổ chức hôn lễ">
                 </div>
                 <div class="input__box">
                     <span class="details">Địa chỉ Mời ăn (Đãi tiệc) của Nhà Trai</span>
@@ -325,17 +369,21 @@
                         placeholder="Địa chỉ tổ chức hôn lễ">
                 </div>
                 <div class="input__box">
+                    <span class="details">Thời Gian Mời Ăn (Đãi Tiệc) của Nhà Trai</span>
+                    <span class="small">(Chọn ngày Dương lịch - Có thể để trống)</span>
+                    <input type="time" name="time-tiec-1" value="{{ old('time-tiec-1') }}">
+                </div>
+                <div class="input__box">
                     <span class="details">Ngày/tháng Mời Ăn (Đãi Tiệc) của Nhà Trai</span>
                     <span class="small">(Chọn ngày Dương lịch - Có thể để trống)</span>
-                    <input type="datetime-local" name="time-tiec-1" value="{{ old('time-tiec-1') }}">
+                    <input type="date" name="date-tiec-1" value="{{ old('date-tiec-1') }}">
                 </div>
             </div>
 
             <div class="title mb-3">Thông tin nhà gái</div>
             <div class="user__details">
-                <div class="input__box">
-                    <span class="details">Tên Cô Dâu</span>
-                    <span class="small">(Bắt buộc)</span>
+                <div class="input__box" style="width: 100%;">
+                    <span class="details">Tên Cô Dâu <div class="required-text">*</div> </span>
                     <input type="text" name="name-2" value="{{ old('name-2') }}" placeholder="Tên cô dâu">
                 </div>
                 <div class="input__box">
@@ -350,10 +398,21 @@
                     <input type="text" name="name-mother-2" value="{{ old('name-mother-2') }}"
                         placeholder="Tên mẹ Cô Dâu">
                 </div>
-                <div class="input__box">
+                <div class="input__box address">
                     <span class="details">Địa chỉ Nhà Gái</span>
-                    <span class="small">(Thôn Xóm Ấp/ Phường Xã/ Quận Huyện/ Tỉnh)</span>
-                    <input type="text" name="address-2" value="{{ old('address-2') }}" placeholder="Địa chỉ">
+                    <div class="wrap-address">
+                        <input type="text" name="address-2" value="{{ old('address-2') }}"
+                            placeholder="Địa chỉ chi tiết">
+                        <select id="provinceSelect2" name="address-2-1" value="{{ old('address-2-1') }}">
+                            <option value="">Chọn tỉnh/thành phố</option>
+                        </select>
+                        <select id="districtSelect2" name="address-2-2" value="{{ old('address-2-2') }}">
+                            <option value="">Chọn huyện/quận</option>
+                        </select>
+                        <select id="wardSelect2" name="address-2-3" value="{{ old('address-2-3') }}">
+                            <option value="">Chọn thôn/xã</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="input__box">
                     <span class="details">Thời gian/Ngày/tháng tổ chức Hôn Lễ (Lễ Vu Quy)</span>
@@ -408,6 +467,117 @@
             </div>
         </form>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var apiUrl = 'https://provinces.open-api.vn/api/';
+
+            // Function để tải danh sách tỉnh/thành phố và thêm vào dropdown list
+            function loadProvinces() {
+                $.get(apiUrl + 'p/', function(data) {
+                    var provinces = data;
+                    provinces.forEach(function(province) {
+                        $('#provinceSelect').append('<option value="' + province.code + '">' +
+                            province.name + '</option>');
+                        $('#provinceSelect2').append('<option value="' + province.code + '">' +
+                            province.name + '</option>');
+                    });
+                });
+            }
+
+            // Function để tải danh sách huyện/quận của một tỉnh/thành phố
+            function loadDistricts(provinceCode, check = false) {
+                if (check) {
+                    $('#districtSelect2').empty();
+                    $('#wardSelect2').empty();
+                    $.get(apiUrl + 'p/' + provinceCode + '?depth=2', function(data) {
+                        var districts = data.districts;
+                        districts.forEach(function(district) {
+                            $('#districtSelect2').append('<option value="' + district.code + '">' +
+                                district.name + '</option>');
+                        });
+                    });
+                    return;
+                }
+                $('#districtSelect').empty();
+                $('#wardSelect').empty();
+                $.get(apiUrl + 'p/' + provinceCode + '?depth=2', function(data) {
+                    var districts = data.districts;
+                    districts.forEach(function(district) {
+                        $('#districtSelect').append('<option value="' + district.code + '">' +
+                            district.name + '</option>');
+                    });
+                });
+            }
+
+            // Function để tải danh sách thôn/xã của một huyện/quận
+            function loadWards(districtCode, check = false) {
+                if (check) {
+                    $('#wardSelect2').empty();
+                    $.get(apiUrl + 'd/' + districtCode + '?depth=2', function(data) {
+                        var wards = data.wards;
+                        wards.forEach(function(ward) {
+                            $('#wardSelect2').append('<option value="' + ward.code + '">' + ward
+                                .name +
+                                '</option>');
+                        });
+                    });
+                    return;
+                }
+                $('#wardSelect').empty();
+                $.get(apiUrl + 'd/' + districtCode + '?depth=2', function(data) {
+                    var wards = data.wards;
+                    wards.forEach(function(ward) {
+                        $('#wardSelect').append('<option value="' + ward.code + '">' + ward.name +
+                            '</option>');
+                    });
+                });
+            }
+
+            // Tải danh sách tỉnh/thành phố khi trang được tải
+            loadProvinces();
+
+            // Xử lý sự kiện khi chọn tỉnh/thành phố từ dropdown
+            $('#provinceSelect').on('change', function() {
+                var selectedProvinceCode = $(this).val();
+                if (selectedProvinceCode !== '') {
+                    loadDistricts(selectedProvinceCode);
+                } else {
+                    $('#districtSelect').empty();
+                    $('#wardSelect').empty();
+                }
+            });
+
+            $('#provinceSelect2').on('change', function() {
+                var selectedProvinceCode = $(this).val();
+                if (selectedProvinceCode !== '') {
+                    loadDistricts(selectedProvinceCode, 2);
+                } else {
+                    $('#districtSelect2').empty();
+                    $('#wardSelect2').empty();
+                }
+            });
+
+            // Xử lý sự kiện khi chọn huyện/quận từ dropdown
+            $('#districtSelect').on('change', function() {
+                var selectedDistrictCode = $(this).val();
+                if (selectedDistrictCode !== '') {
+                    loadWards(selectedDistrictCode);
+                } else {
+                    $('#wardSelect').empty();
+                }
+            });
+            $('#districtSelect2').on('change', function() {
+                var selectedDistrictCode = $(this).val();
+                if (selectedDistrictCode !== '') {
+                    loadWards(selectedDistrictCode, true);
+                } else {
+                    $('#wardSelect2').empty();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
